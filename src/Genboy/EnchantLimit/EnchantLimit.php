@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace Genboy\EnchantLimit;
 
+use Genboy\EnchantLimit\Helper;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\command\CommandSender;
@@ -46,8 +48,6 @@ class EnchantLimit extends PluginBase { //  implements Listener
 	/** @var string */
 	public $usedplugin = '';    // used enchanment plugin
 
-	/** @var string */
-	public $piggyCE = false;    // used enchanment plugin
 
 	public function onEnable() : void{
 
@@ -96,13 +96,6 @@ class EnchantLimit extends PluginBase { //  implements Listener
                 break;
             }
         }
-
-        if( $this->usedplugin == 'PiggyCustomEnchants'){
-
-            $this->piggyCE = $this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants");
-
-        }
-
         // https://github.com/DaPigGuy/PiggyCustomEnchants/blob/044df614f676d140d399ebca5503679a4bfebc65/src/DaPigGuy/PiggyCustomEnchants/utils/Utils.php#L167
 
     }
