@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace Genboy\EnchantLimit;
 
+use Genboy\EnchantLimit\Helper;
+use pocketmine\utils\Config;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\command\CommandSender;
@@ -35,9 +37,9 @@ use pocketmine\Player;
 use pocketmine\entity\Entity;
 
 
-class EnchantLimit extends PluginBase { //  implements Listener
+class EnchantLimit extends PluginBase {
 
-    /** @var obj */
+    /** @var helper */
 	public $helper; // helper class
 
 	/** @var array[] */
@@ -46,8 +48,6 @@ class EnchantLimit extends PluginBase { //  implements Listener
 	/** @var string */
 	public $usedplugin = '';    // used enchanment plugin
 
-	/** @var string */
-	public $piggyCE = false;    // used enchanment plugin
 
 	public function onEnable() : void{
 
@@ -63,15 +63,37 @@ class EnchantLimit extends PluginBase { //  implements Listener
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 
-		switch($command->getName()){
-            // add base commands like set default limit, add/remove active worlds
-			case "enchantlimit":
-				$sender->sendMessage("Example command output, plugin in progress");
-                // change config limit
-				return true;
-			default:
-				return false;
+        if(!isset($args[0])){
+			return false;
 		}
+
+        $playerName = strtolower($sender->getName());
+
+		$action = strtolower($args[0]);
+		$o = "";
+
+        if($sender->isOp()){
+
+            switch($action){
+
+                case "set":
+                    if( isset( $args[1] )  ){
+                        if( is_numeric( $args[1] ) ){
+                            $this->config['settings']['limit'] = $args[1];
+                            $this->helper->saveDataSet( "config", $this->config );
+                            $o = "Set EnchantLimit to ". $args[1];
+                        }
+                    }else{
+                        $o = "use: /enchantLimit set <number (int)> ";
+                    }
+                    return true;
+                default:
+                    return false;
+            }
+        }else{
+            $o = "Command not allowed!";
+        }
+        $sender->sendMessage( $o );
 
 	}
 
@@ -81,9 +103,7 @@ class EnchantLimit extends PluginBase { //  implements Listener
 
 	}
 
-    /** hasEnchantPlugin
-     * @func Main isPluginLoaded()a
-     */
+    // hasEnchantPlugin
     public function hasEnchantPlugin() : void{
 
         /* Filter out / choose  plugin */
@@ -96,22 +116,11 @@ class EnchantLimit extends PluginBase { //  implements Listener
                 break;
             }
         }
-
-        if( $this->usedplugin == 'PiggyCustomEnchants'){
-
-            $this->piggyCE = $this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants");
-
-        }
-
         // https://github.com/DaPigGuy/PiggyCustomEnchants/blob/044df614f676d140d399ebca5503679a4bfebc65/src/DaPigGuy/PiggyCustomEnchants/utils/Utils.php#L167
 
     }
 
-    /** configSetup
-	 * @class Helper
-	 * @func Helper getSource
-	 * @var $plugin->options
-     */
+    // configSetup
     public function configSetup(): void{
 
         $config = $this->helper->getDataSet( "config" ); // latest json type config file in datafolde
@@ -125,7 +134,7 @@ class EnchantLimit extends PluginBase { //  implements Listener
             $this->config = [ 'settings' => [
                 'limit' => 8,
                 'worlds' => []
-            ] ];   // {"settings":{"limit":8,"worlds":[]}};
+            ] ];
             $o = "test: Default configuration loaded!";
         }
 
@@ -152,7 +161,6 @@ class EnchantLimit extends PluginBase { //  implements Listener
 
             $enchanted = 0;
             $limit = $this->config['settings']['limit'];
-            //$repli = clone $item;
             $level = 0 ;
 
             foreach($item->getEnchantments() as $enchantm) {
@@ -181,28 +189,6 @@ class EnchantLimit extends PluginBase { //  implements Listener
 
         }
 
-    }
-
-    // https://forums.pmmp.io/threads/enchants.2433/
-    public function removeEnchantment(int $id, int $level = -1){
-        if(!$this->hasEnchantments()){
-            return;
-        }
-        $tag = $this->getNamedTag();
-        foreach($tag->ench as $k => $entry){
-            if($entry["id"] === $id){
-                if($level === -1 or $entry["lvl"] === $level){
-                    unset($tag->ench[$k]);
-                    break;
-                }
-            }
-        }
-        $this->setNamedTag($tag);
-    }
-
-
-    // set item lore info
-    public function setItemEnchantInfo( $item ) : void{
     }
 
 }

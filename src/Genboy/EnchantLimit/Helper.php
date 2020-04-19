@@ -1,12 +1,11 @@
 <?php declare(strict_types = 1);
 /** src/genboy/EnchantLimit/Helper.php
  *
- * global helper
- *
  */
 namespace Genboy\EnchantLimit;
 
 use pocketmine\math\Vector3;
+use pocketmine\utils\Config;
 
 class Helper {
 
@@ -15,12 +14,18 @@ class Helper {
     public function __construct( EnchantLimit $plugin){
 
         $this->plugin = $plugin;
+
+        if(!is_dir($this->plugin->getDataFolder())){
+            @mkdir($this->plugin->getDataFolder());
+		}
+        // add resource folder for backwards compatibility
+        if( !is_dir($this->plugin->getDataFolder().'resources') ){
+           @mkdir($this->plugin->getDataFolder().'resources');
+		}
     }
 
 
-    /** getServerInfo
-	 * @func plugin getServer()
-     */
+    // getServerInfo
     public function getServerInfo() : ARRAY {
         $s = [];
         $s['ver']   = $this->plugin->getServer()->getVersion();
@@ -28,18 +33,16 @@ class Helper {
         return $s;
     }
 
-    /** isPluginLoaded
-	 * @func plugin getServer()
-     */
+    // isPluginLoaded
     public function isPluginLoaded(string $pluginName){
 
         return ($findplugin = $this->plugin->getServer()->getPluginManager()->getPlugin($pluginName)) !== null and $findplugin->isEnabled();
 
     }
 
-    /** getDataSet
+     /** getDataSet
 	 * @param string $name
-	 * @param (string $type)
+	 * @param string $type
 	 * @func plugin getDataFolder()
      * @func yaml_parse_file
      * @func json_decode
@@ -64,12 +67,12 @@ class Helper {
         return [];
     }
 
-    /** saveDataSet
+     /** saveDataSet
 	 * @param string $name
 	 * @param array $data
 	 * @param string $type default
 	 * @func plugin getDataFolder()
-     * @func FileConfig
+     * @obj FileConfig
      * @func json_encode
      * @func file_put_contents
      * @return array
