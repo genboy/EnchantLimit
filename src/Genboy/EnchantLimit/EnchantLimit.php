@@ -35,7 +35,7 @@ use pocketmine\Player;
 use pocketmine\entity\Entity;
 
 
-class EnchantLimit extends PluginBase { //  implements Listener
+class EnchantLimit extends PluginBase {
 
     /** @var helper */
 	public $helper; // helper class
@@ -62,10 +62,9 @@ class EnchantLimit extends PluginBase { //  implements Listener
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 
 		switch($command->getName()){
-            // add base commands like set default limit, add/remove active worlds
+            // todo: add base commands like set default limit, add/remove active worlds
 			case "enchantlimit":
 				$sender->sendMessage("Example command output, plugin in progress");
-                // change config limit
 				return true;
 			default:
 				return false;
@@ -79,9 +78,7 @@ class EnchantLimit extends PluginBase { //  implements Listener
 
 	}
 
-    /** hasEnchantPlugin
-     * @func Main isPluginLoaded()a
-     */
+    // hasEnchantPlugin
     public function hasEnchantPlugin() : void{
 
         /* Filter out / choose  plugin */
@@ -98,11 +95,7 @@ class EnchantLimit extends PluginBase { //  implements Listener
 
     }
 
-    /** configSetup
-	 * @class Helper
-	 * @func Helper getSource
-	 * @var $plugin->options
-     */
+    // configSetup
     public function configSetup(): void{
 
         $config = $this->helper->getDataSet( "config" ); // latest json type config file in datafolde
@@ -116,7 +109,7 @@ class EnchantLimit extends PluginBase { //  implements Listener
             $this->config = [ 'settings' => [
                 'limit' => 8,
                 'worlds' => []
-            ] ];   // {"settings":{"limit":8,"worlds":[]}};
+            ] ];
             $o = "test: Default configuration loaded!";
         }
 
@@ -143,7 +136,6 @@ class EnchantLimit extends PluginBase { //  implements Listener
 
             $enchanted = 0;
             $limit = $this->config['settings']['limit'];
-            //$repli = clone $item;
             $level = 0 ;
 
             foreach($item->getEnchantments() as $enchantm) {

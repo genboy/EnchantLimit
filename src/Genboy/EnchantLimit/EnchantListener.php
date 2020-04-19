@@ -22,14 +22,6 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\event\inventory\InventoryOpenEvent;
 
-//use pocketmine\event\inventory\InventoryCloseEvent;
-//use pocketmine\event\player\PlayerInteractEvent;
-//use pocketmine\event\entity\EntityEffectAddEvent;
-//use pocketmine\event\entity\EntityInventoryChangeEvent;
-//use pocketmine\event\inventory\InventoryTransactionEvent;
-//use pocketmine\event\entity\EntityArmorChangeEvent;
-//use pocketmine\event\entity\EntityInventoryChangeEvent;
-
 class EnchantListener implements Listener {
 
     public $plugin;
@@ -46,7 +38,6 @@ class EnchantListener implements Listener {
             $inv = $player->getInventory();
             $arm = $player->getArmorInventory();
 
-            //$player->sendMessage('Start inventory');
             $this->plugin->checkInventory( $player, $inv );
             $this->plugin->checkInventory( $player, $arm );
     }
@@ -57,8 +48,6 @@ class EnchantListener implements Listener {
         if( $player instanceof Player){
             $inv = $player->getInventory();
             $arm = $player->getArmorInventory();
-
-            //$player->sendMessage('Open inventory');
 
             $this->plugin->checkInventory( $player, $inv );
             $this->plugin->checkInventory( $player, $arm );
@@ -72,8 +61,6 @@ class EnchantListener implements Listener {
 
         $player = $event->getPlayer();
         $item = $player->getInventory()->getItemInHand();
-
-        //$player->sendMessage('Hold item');
 
         $inv = $player->getInventory();
         $arm = $player->getArmorInventory();
