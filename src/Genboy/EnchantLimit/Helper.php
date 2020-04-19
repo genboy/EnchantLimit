@@ -5,6 +5,7 @@
 namespace Genboy\EnchantLimit;
 
 use pocketmine\math\Vector3;
+use pocketmine\utils\Config;
 
 class Helper {
 
@@ -13,6 +14,14 @@ class Helper {
     public function __construct( EnchantLimit $plugin){
 
         $this->plugin = $plugin;
+
+        if(!is_dir($this->plugin->getDataFolder())){
+            @mkdir($this->plugin->getDataFolder());
+		}
+        // add resource folder for backwards compatibility
+        if( !is_dir($this->plugin->getDataFolder().'resources') ){
+           @mkdir($this->plugin->getDataFolder().'resources');
+		}
     }
 
 
@@ -31,7 +40,14 @@ class Helper {
 
     }
 
-    // get Dataset
+     /** getDataSet
+	 * @param string $name
+	 * @param (string $type)
+	 * @func plugin getDataFolder()
+     * @func yaml_parse_file
+     * @func json_decode
+     * @return array
+     */
     public function getDataSet( $name , $type = 'json' ) : ARRAY {
         if( file_exists($this->plugin->getDataFolder() . $name . ".". $type)){
             switch( $type ){

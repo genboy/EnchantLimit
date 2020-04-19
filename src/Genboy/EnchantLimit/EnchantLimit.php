@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace Genboy\EnchantLimit;
 
 use Genboy\EnchantLimit\Helper;
-
+use pocketmine\utils\Config;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\command\CommandSender;
