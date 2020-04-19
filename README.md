@@ -15,7 +15,7 @@ restart server
 
 ### Set Limit Ingame
 
-- usage (ops) : /enchantLimit set <number>
+- command (ops) /enchantLimit set INT
     
 
 Download .phar file for testing from [https://poggit.pmmp.io/ci/genboy/EnchantLimit/EnchantLimit/dev:2](https://poggit.pmmp.io/ci/genboy/EnchantLimit/EnchantLimit/dev:2) 
