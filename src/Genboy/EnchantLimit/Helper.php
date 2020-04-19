@@ -51,7 +51,16 @@ class Helper {
         return [];
     }
 
-    // save Dataset
+     /** saveDataSet
+	 * @param string $name
+	 * @param array $data
+	 * @param string $type default
+	 * @func plugin getDataFolder()
+     * @class FileConfig
+     * @func json_encode
+     * @func file_put_contents
+     * @return array
+     */
     public function saveDataSet( $name, $data, $type = 'json') : ARRAY {
         switch( $type ){
             case 'yml':
