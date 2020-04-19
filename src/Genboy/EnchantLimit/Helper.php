@@ -42,7 +42,7 @@ class Helper {
 
      /** getDataSet
 	 * @param string $name
-	 * @param (string $type)
+	 * @param string $type
 	 * @func plugin getDataFolder()
      * @func yaml_parse_file
      * @func json_decode
@@ -72,7 +72,7 @@ class Helper {
 	 * @param array $data
 	 * @param string $type default
 	 * @func plugin getDataFolder()
-     * @class FileConfig
+     * @obj FileConfig
      * @func json_encode
      * @func file_put_contents
      * @return array
