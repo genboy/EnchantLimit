@@ -1,8 +1,6 @@
 <?php declare(strict_types = 1);
 /** src/genboy/EnchantLimit/Helper.php
  *
- * global helper
- *
  */
 namespace Genboy\EnchantLimit;
 
@@ -18,9 +16,7 @@ class Helper {
     }
 
 
-    /** getServerInfo
-	 * @func plugin getServer()
-     */
+    // getServerInfo
     public function getServerInfo() : ARRAY {
         $s = [];
         $s['ver']   = $this->plugin->getServer()->getVersion();
@@ -28,23 +24,14 @@ class Helper {
         return $s;
     }
 
-    /** isPluginLoaded
-	 * @func plugin getServer()
-     */
+    // isPluginLoaded
     public function isPluginLoaded(string $pluginName){
 
         return ($findplugin = $this->plugin->getServer()->getPluginManager()->getPlugin($pluginName)) !== null and $findplugin->isEnabled();
 
     }
 
-    /** getDataSet
-	 * @param string $name
-	 * @param (string $type)
-	 * @func plugin getDataFolder()
-     * @func yaml_parse_file
-     * @func json_decode
-     * @return array
-     */
+    // get Dataset
     public function getDataSet( $name , $type = 'json' ) : ARRAY {
         if( file_exists($this->plugin->getDataFolder() . $name . ".". $type)){
             switch( $type ){
@@ -64,16 +51,7 @@ class Helper {
         return [];
     }
 
-    /** saveDataSet
-	 * @param string $name
-	 * @param array $data
-	 * @param string $type default
-	 * @func plugin getDataFolder()
-     * @func FileConfig
-     * @func json_encode
-     * @func file_put_contents
-     * @return array
-     */
+    // save Dataset
     public function saveDataSet( $name, $data, $type = 'json') : ARRAY {
         switch( $type ){
             case 'yml':
