@@ -63,14 +63,37 @@ class EnchantLimit extends PluginBase {
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 
-		switch($command->getName()){
-            // todo: add base commands like set default limit, add/remove active worlds
-			case "enchantlimit":
-				$sender->sendMessage("Example command output, plugin in progress");
-				return true;
-			default:
-				return false;
+        if(!isset($args[0])){
+			return false;
 		}
+
+        $playerName = strtolower($sender->getName());
+
+		$action = strtolower($args[0]);
+		$o = "";
+
+        if($sender->isOp()){
+
+            switch($action){
+
+                case "set":
+                    if( isset( $args[1] )  ){
+                        if( is_numeric( $args[1] ) ){
+                            $this->config['settings']['limit'] = $args[1];
+                            $this->helper->saveDataSet( "config", $this->config );
+                            $o = "Set EnchantLimit to ". $args[1];
+                        }
+                    }else{
+                        $o = "use: /enchantLimit set <number (int)> ";
+                    }
+                    return true;
+                default:
+                    return false;
+            }
+        }else{
+            $o = "Command not allowed!";
+        }
+        $sender->sendMessage( $o );
 
 	}
 
