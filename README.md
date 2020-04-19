@@ -15,7 +15,9 @@ restart server
 
 ### Set Limit Ingame
 
-- command (ops) /enchantLimit set INT
+Commands for ops 
+- set limit: /enchantLimit set INT
+- set warning limit display position: /enchantLimit display 'title|tip|msg|pop' 
     
 
-Download .phar file for testing from [https://poggit.pmmp.io/ci/genboy/EnchantLimit/EnchantLimit/dev:2](https://poggit.pmmp.io/ci/genboy/EnchantLimit/EnchantLimit/dev:2) 
+Download .phar file for testing from [https://poggit.pmmp.io/ci/genboy/EnchantLimit/EnchantLimit/dev:2](https://poggit.pmmp.io/ci/genboy/EnchantLimit/EnchantLimit) 

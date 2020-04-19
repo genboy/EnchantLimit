@@ -9,7 +9,7 @@ website: https://github.com/genboy
 commands:
  enchantlimit:
   description: "Limit Enchantments plugin"
-  usage: "/enchantlimit"
+  usage: "Set the enchantment limit for each item: /enchantlimit set <number>, info: /enchantlimit info"
   permission: enchantlimit.command
 permissions:
  enchantlimit:
