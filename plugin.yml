@@ -1,0 +1,21 @@
+name: EnchantLimit
+main: Genboy\EnchantLimit\EnchantLimit
+version: 0.0.1
+api: 3.11.6
+load: POSTWORLD
+author: Genboy
+description: Limit Enchantments plugin
+website: https://github.com/genboy
+commands:
+ enchantlimit:
+  description: "Limit Enchantments plugin"
+  usage: "/enchantlimit"
+  permission: enchantlimit.command
+permissions:
+ enchantlimit:
+  default: true
+  description: "Example root enchantlimit permission node"
+  children:
+   enchantlimit.command:
+    default: true
+    description: "Allows the use of /enchantlimit"
