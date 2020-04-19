@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace Genboy\EnchantLimit;
 
-use Genboy\EnchantLimit\Helper;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\command\CommandSender;
@@ -39,7 +37,7 @@ use pocketmine\entity\Entity;
 
 class EnchantLimit extends PluginBase { //  implements Listener
 
-    /** @var obj */
+    /** @var helper */
 	public $helper; // helper class
 
 	/** @var array[] */
