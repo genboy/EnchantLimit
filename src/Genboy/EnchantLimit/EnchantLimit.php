@@ -72,7 +72,7 @@ class EnchantLimit extends PluginBase {
                 // info
                 case "help":
                 case "info":
-                    $o = "EnchantLimit default is ". $this->config['settings']['limit'] ." - commands: set the server default enchantment limit: /el default <number(int)> , choose display position limit warning: /el display <title|tip|msg|pop>";
+                    $o = TextFormat::LIGHT_PURPLE . "EnchantLimit default is". TextFormat::GREEN . " ". $this->config['settings']['limit'] . TextFormat::AQUA . " - commands: set the server default enchantment limit: /el default <number(int)> , choose display position limit warning: /el display <title|tip|msg|pop>";
                     $sender->sendMessage( $o );
                     return true;
 
@@ -83,7 +83,7 @@ class EnchantLimit extends PluginBase {
 
                             $this->config['settings']['limit'] = $args[1];
                             $this->helper->saveDataSet( "config", $this->config );
-                            $o = "Set EnchantLimit default to ". $args[1];
+                            $o = TextFormat::YELLOW . "Set EnchantLimit default to". TextFormat::GREEN . " " . $args[1];
 
                             $inv = $sender->getInventory();
                             $arm = $sender->getArmorInventory();
@@ -93,7 +93,7 @@ class EnchantLimit extends PluginBase {
 
                         }
                     }else{
-                        $o = "use: /el default <number (int)>";
+                        $o = TextFormat::AQUA . "use: /el default <number (int)>";
                     }
                     $sender->sendMessage( $o );
                     return true;
@@ -104,12 +104,12 @@ class EnchantLimit extends PluginBase {
                         if( $args[1] == 'title' || $args[1] == 'tip' || $args[1] == 'msg' || $args[1] == 'pop' ){
                             $this->config['settings']['display'] = $args[1];
                             $this->helper->saveDataSet( "config", $this->config );
-                            $o = "EnchantLimit warning display position set to ". $args[1];
+                            $o = TextFormat::YELLOW . "EnchantLimit warning display position set to". TextFormat::GREEN . " ". $args[1];
                         }else{
-                            $o = "use: /el display <title|tip|msg|pop>";
+                            $o = TextFormat::AQUA . "use: /el display <title|tip|msg|pop>";
                         }
                     }else{
-                        $o = "use: /el display <title|tip|msg|pop>";
+                        $o = TextFormat::AQUA . "use: /el display <title|tip|msg|pop>";
                     }
                     $sender->sendMessage( $o );
                     return true;
@@ -118,7 +118,7 @@ class EnchantLimit extends PluginBase {
                     return false;
             }
         }else{
-            $o = "Command not allowed!";
+            $o = TextFormat::RED . "Command not allowed!";
             $sender->sendMessage( $o );
             return false;
         }
@@ -192,7 +192,7 @@ class EnchantLimit extends PluginBase {
                 }else{
                     $id = $enchantm->getId();
                     $item->removeEnchantment( $id );
-                    $this->areaMessage( 'Enchant Limit Reached!' , $player );
+                    $this->areaMessage( TextFormat::RED . 'Enchant Limit Reached!' , $player );
                     //$player->sendMessage('Enchant Limit Reached!');
                 }
             }

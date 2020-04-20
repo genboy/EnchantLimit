@@ -18,12 +18,12 @@ restart server
 ### Set Limit Ingame
 
 Commands for ops 
-- set limit: /enchantLimit set LIMITNUMBER
-- set warning limit display position: /enchantLimit display 'title|tip|msg|pop' 
+- set limit: /el(enchantLimit) default LIMITNUMBER
+- set warning limit display position: /el(enchantLimit) display 'title|tip|msg|pop'
     
 ### Development
 Feel free to post your [issues on Github](https://github.com/genboy/EnchantLimit/issues) 
 Info and downloads at the  [EnchantLimit devboard](https://github.com/genboy/EnchantLimit/projects/1) and  [EnchantLimit Poggit page](https://poggit.pmmp.io/ci/genboy/EnchantLimit/EnchantLimit) 
 
 
-###### [](https://github.com/genboy/Festival#copyright-genboy-2018---2019)Copyright [Genboy](https://genboy.net/minecraft) 2020
+###### Copyright [Genboy](https://github.com/genboy) 2020
