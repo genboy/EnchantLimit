@@ -1,40 +1,15 @@
 <?php
-/*
-Ok great the small plugin is an enchant limit plugin,
-it makes it so players can only add lets say the
-[x] configs - max enchants is 8, they can only add 8 enchants on their items vanilla and custom enchants,
-[ ] display - Enchants [0/8] on the lore of the items which is showing how many enchant slots they have used out of their available slots.
-This could need to be compatible with PiggyCE and VanillaEnchants. Just ask if you need more information about this.
-
-https://piggydocs.aericio.net/PiggyCustomEnchants.html
-
-- [x] events to check inventory/armor enchants
-- [x] way to change item lore (static?)
-- [x] way to change remove enchantments (beyond limit)
-*/
-
 declare(strict_types=1);
 
 namespace Genboy\EnchantLimit;
 
-use Genboy\EnchantLimit\Helper;
+use pocketmine\Player;
 use pocketmine\utils\Config;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\utils\TextFormat;
-
-use pocketmine\item\enchantment\Enchantment;
-use pocketmine\item\enchantment\EnchantmentInstance;
-use DaPigGuy\PiggyCustomEnchants\CustomEnchants\CustomEnchants;
-
-use pocketmine\inventory\Inventory;
-use pocketmine\inventory\ArmorInventory;
-use pocketmine\event\inventory\InventoryEvent;
-
-use pocketmine\Player;
-use pocketmine\entity\Entity;
 
 
 class EnchantLimit extends PluginBase {
@@ -47,7 +22,6 @@ class EnchantLimit extends PluginBase {
 
 	/** @var string */
 	public $usedplugin = '';    // used enchanment plugin
-
 
 	public function onEnable() : void{
         $this->getServer()->getPluginManager()->registerEvents(new EnchantListener($this), $this);
@@ -132,8 +106,6 @@ class EnchantLimit extends PluginBase {
 
 	}
 
-
-
     // hasEnchantPlugin
     public function hasEnchantPlugin() : void{
         /* Filter out / choose  plugin (not really needed ([yet]) */
@@ -146,7 +118,6 @@ class EnchantLimit extends PluginBase {
                 break;
             }
         }
-        // https://github.com/DaPigGuy/PiggyCustomEnchants/blob/044df614f676d140d399ebca5503679a4bfebc65/src/DaPigGuy/PiggyCustomEnchants/utils/Utils.php#L167
     }
 
     // configSetup
@@ -174,7 +145,7 @@ class EnchantLimit extends PluginBase {
     public function checkInventory( $player, $inv  ) : void{
         $contents = $inv->getContents();
         foreach($inv->getContents() as $key => $item) {
-            $slot = $key; //array_search($item, $contents); // https://forums.pmmp.io/threads/get-item-slot.2186/
+            $slot = $key;
             $this->checkItem( $player, $item, $inv, $slot );
         }
     }
@@ -193,11 +164,10 @@ class EnchantLimit extends PluginBase {
                     $id = $enchantm->getId();
                     $item->removeEnchantment( $id );
                     $this->areaMessage( TextFormat::RED . 'Enchant Limit Reached!' , $player );
-                    //$player->sendMessage('Enchant Limit Reached!');
                 }
             }
 
-            $info = $item->getLore(); //$item->setCustomName('test');
+            $info = $item->getLore();
             foreach( $info as $i => $line ){
                 if (strpos($line, "Enchant Limit") !== false) {
                     unset($info[$i]);

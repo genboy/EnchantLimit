@@ -6,9 +6,7 @@ namespace Genboy\EnchantLimit;
 
 use pocketmine\Server;
 use pocketmine\utils\Config;
-use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginBase;
-use pocketmine\math\Vector3;
 
 class Helper {
 
