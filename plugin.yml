@@ -11,6 +11,10 @@ commands:
   description: "Limit Enchantments plugin"
   usage: "Set the enchantment limit for each item: /enchantlimit set <number>, info: /enchantlimit info"
   permission: enchantlimit.command
+ el:
+  description: "Limit Enchantments plugin (short cmd)"
+  usage: "Set the enchantment limit for each item: /enchantlimit set <number>, info: /enchantlimit info"
+  permission: el.command
 permissions:
  enchantlimit:
   default: true
@@ -19,3 +23,10 @@ permissions:
    enchantlimit.command:
     default: true
     description: "Allows the use of /enchantlimit"
+ el:
+  default: true
+  description: "Example root el permission node"
+  children:
+   el.command:
+    default: true
+    description: "Allows the use of /el"

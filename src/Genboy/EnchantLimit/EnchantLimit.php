@@ -68,22 +68,37 @@ class EnchantLimit extends PluginBase {
 
         if($sender->isOp()){
             switch($action){
+
+                // info
+                case "help":
                 case "info":
-                    $o = "EnchantLimit is ". $this->config['settings']['limit'] ." - use /enchantlimit set <number> to adjust the limit";
+                    $o = "EnchantLimit default is ". $this->config['settings']['limit'] ." - commands: set the server default enchantment limit: /el default <number(int)> , choose display position limit warning: /el display <title|tip|msg|pop>";
                     $sender->sendMessage( $o );
                     return true;
-                case "set":
+
+                // default limit
+                case "default":
                     if( isset( $args[1] )  ){
                         if( is_numeric( $args[1] ) ){
+
                             $this->config['settings']['limit'] = $args[1];
                             $this->helper->saveDataSet( "config", $this->config );
-                            $o = "Set EnchantLimit to ". $args[1];
+                            $o = "Set EnchantLimit default to ". $args[1];
+
+                            $inv = $sender->getInventory();
+                            $arm = $sender->getArmorInventory();
+
+                            $this->checkInventory( $sender, $inv );
+                            $this->checkInventory( $sender, $arm );
+
                         }
                     }else{
-                        $o = "use: /enchantLimit set <number (int)>";
+                        $o = "use: /el default <number (int)>";
                     }
                     $sender->sendMessage( $o );
                     return true;
+
+                // limit warning display position
                 case "display":
                     if( isset( $args[1] )  ){
                         if( $args[1] == 'title' || $args[1] == 'tip' || $args[1] == 'msg' || $args[1] == 'pop' ){
@@ -91,19 +106,21 @@ class EnchantLimit extends PluginBase {
                             $this->helper->saveDataSet( "config", $this->config );
                             $o = "EnchantLimit warning display position set to ". $args[1];
                         }else{
-                            $o = "use: /enchantLimit display <title|tip|msg|pop>";
+                            $o = "use: /el display <title|tip|msg|pop>";
                         }
                     }else{
-                        $o = "use: /enchantLimit display <title|tip|msg|pop>";
+                        $o = "use: /el display <title|tip|msg|pop>";
                     }
                     $sender->sendMessage( $o );
                     return true;
+
                 default:
                     return false;
             }
         }else{
             $o = "Command not allowed!";
             $sender->sendMessage( $o );
+            return false;
         }
 
 
