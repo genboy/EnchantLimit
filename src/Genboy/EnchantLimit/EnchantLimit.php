@@ -66,7 +66,7 @@ class EnchantLimit extends PluginBase {
 		$action = strtolower($args[0]);
 		$o = "";
 
-        if($sender->isOp()){
+        if( $sender instanceof Player && $sender->isOp() ){
             switch($action){
 
                 // info
@@ -212,11 +212,7 @@ class EnchantLimit extends PluginBase {
     }
 
     /** AreaMessage
-    * define message type
     * @param string $msg
-    * @param PlayerMoveEvent $ev->getPLayer()
-    * @param array $options
-    * @return true function
     */
 	public function areaMessage( $msg , $player ){
         if($this->config['settings']['display'] == 'msg'){
@@ -229,6 +225,7 @@ class EnchantLimit extends PluginBase {
 		}else{
 			$player->sendPopup($msg);
 		}
+        return true;
 	}
 
 }
