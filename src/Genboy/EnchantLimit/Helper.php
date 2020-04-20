@@ -4,14 +4,17 @@
  */
 namespace Genboy\EnchantLimit;
 
-use pocketmine\math\Vector3;
+use pocketmine\Server;
 use pocketmine\utils\Config;
+use pocketmine\plugin\Plugin;
+use pocketmine\plugin\PluginBase;
+use pocketmine\math\Vector3;
 
 class Helper {
 
     private $plugin;
 
-    public function __construct( EnchantLimit $plugin){
+    public function __construct( EnchantLimit $plugin ){
 
         $this->plugin = $plugin;
 
@@ -81,7 +84,7 @@ class Helper {
         switch( $type ){
             case 'yml':
             case 'yaml':
-                 $src = new FileConfig($this->plugin->getDataFolder(). $name . ".yml", FileConfig::YAML, $data);
+                 $src = new Config( $this->plugin->getDataFolder(). $name . ".yml", Config::YAML, $data); // new FileConfig($this->plugin->getDataFolder(). $name . ".yml", FileConfig::YAML, $data);
                  $src->save();
             break;
             case 'json':

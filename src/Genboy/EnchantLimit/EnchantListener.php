@@ -31,7 +31,7 @@ class EnchantListener implements Listener {
     public function __construct(EnchantLimit $owner) {
 
         $this->plugin = $owner;
-        $this->plugin->getLogger()->info( "test: EnchantLimit Listener Loaded"  );
+        //$this->plugin->getLogger()->info( "test: EnchantLimit Listener Loaded"  );
 
     }
 

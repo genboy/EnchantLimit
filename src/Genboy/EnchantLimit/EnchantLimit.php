@@ -50,15 +50,10 @@ class EnchantLimit extends PluginBase {
 
 
 	public function onEnable() : void{
-
         $this->getServer()->getPluginManager()->registerEvents(new EnchantListener($this), $this);
-
         $this->helper = new Helper($this);
-
-        $this->configSetup(); // might add translations
-
+        $this->configSetup();
         $this->hasEnchantPlugin();
-
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
@@ -68,32 +63,66 @@ class EnchantLimit extends PluginBase {
 		}
 
         $playerName = strtolower($sender->getName());
-
 		$action = strtolower($args[0]);
 		$o = "";
 
         if($sender->isOp()){
-
             switch($action){
 
-                case "set":
+                // info
+                case "help":
+                case "info":
+                    $o = TextFormat::LIGHT_PURPLE . "EnchantLimit default is". TextFormat::GREEN . " ". $this->config['settings']['limit'] . TextFormat::AQUA . " - commands: set the server default enchantment limit: /el default <number(int)> , choose display position limit warning: /el display <title|tip|msg|pop>";
+                    $sender->sendMessage( $o );
+                    return true;
+
+                // default limit
+                case "default":
                     if( isset( $args[1] )  ){
                         if( is_numeric( $args[1] ) ){
+
                             $this->config['settings']['limit'] = $args[1];
                             $this->helper->saveDataSet( "config", $this->config );
-                            $o = "Set EnchantLimit to ". $args[1];
+                            $o = TextFormat::YELLOW . "Set EnchantLimit default to". TextFormat::GREEN . " " . $args[1];
+
+                            $inv = $sender->getInventory();
+                            $arm = $sender->getArmorInventory();
+
+                            $this->checkInventory( $sender, $inv );
+                            $this->checkInventory( $sender, $arm );
+
                         }
                     }else{
-                        $o = "use: /enchantLimit set <number (int)> ";
+                        $o = TextFormat::AQUA . "use: /el default <number (int)>";
                     }
+                    $sender->sendMessage( $o );
                     return true;
+
+                // limit warning display position
+                case "display":
+                    if( isset( $args[1] )  ){
+                        if( $args[1] == 'title' || $args[1] == 'tip' || $args[1] == 'msg' || $args[1] == 'pop' ){
+                            $this->config['settings']['display'] = $args[1];
+                            $this->helper->saveDataSet( "config", $this->config );
+                            $o = TextFormat::YELLOW . "EnchantLimit warning display position set to". TextFormat::GREEN . " ". $args[1];
+                        }else{
+                            $o = TextFormat::AQUA . "use: /el display <title|tip|msg|pop>";
+                        }
+                    }else{
+                        $o = TextFormat::AQUA . "use: /el display <title|tip|msg|pop>";
+                    }
+                    $sender->sendMessage( $o );
+                    return true;
+
                 default:
                     return false;
             }
         }else{
-            $o = "Command not allowed!";
+            $o = TextFormat::RED . "Command not allowed!";
+            $sender->sendMessage( $o );
+            return false;
         }
-        $sender->sendMessage( $o );
+
 
 	}
 
@@ -103,10 +132,11 @@ class EnchantLimit extends PluginBase {
 
 	}
 
+
+
     // hasEnchantPlugin
     public function hasEnchantPlugin() : void{
-
-        /* Filter out / choose  plugin */
+        /* Filter out / choose  plugin (not really needed ([yet]) */
         $pluginNames = [ 'PiggyCustomEnchants', 'VanillaEnchantment' ];
         foreach( $pluginNames as $nm ){
             if( $this->helper->isPluginLoaded( $nm ) ){
@@ -117,32 +147,28 @@ class EnchantLimit extends PluginBase {
             }
         }
         // https://github.com/DaPigGuy/PiggyCustomEnchants/blob/044df614f676d140d399ebca5503679a4bfebc65/src/DaPigGuy/PiggyCustomEnchants/utils/Utils.php#L167
-
     }
 
     // configSetup
     public function configSetup(): void{
-
         $config = $this->helper->getDataSet( "config" ); // latest json type config file in datafolde
         if( isset( $config["settings"] ) && is_array( $config["settings"] ) ){
-
             $this->config = $config;
+            if( !isset( $this->config['settings']['display'] ) ){
+                $this->config['settings']['display'] = 'title'; // msg | title | tip | (popup)
+            }
             $o = "test: Configuration ready!";
-
         }else{
-
             $this->config = [ 'settings' => [
                 'limit' => 8,
+                'display' => 'title',
                 'worlds' => []
             ] ];
             $o = "test: Default configuration loaded!";
         }
-
         $this->helper->saveDataSet( "config", $this->config );
         $this->getLogger()->info( $o );
-
     }
-
 
     // check inventory items enchantments / add lore
     public function checkInventory( $player, $inv  ) : void{
@@ -153,28 +179,22 @@ class EnchantLimit extends PluginBase {
         }
     }
 
-
     // check item enchantments
     public function checkItem( $player, $item, $inv, $slot ) : void{
 
         if ($item->hasEnchantments()) {
-
             $enchanted = 0;
             $limit = $this->config['settings']['limit'];
             $level = 0 ;
-
             foreach($item->getEnchantments() as $enchantm) {
-
                 if( $enchanted < $limit){
                     $enchanted++;
                 }else{
                     $id = $enchantm->getId();
                     $item->removeEnchantment( $id );
-                    $player->sendMessage('Enchant Limit Reached!');
-
+                    $this->areaMessage( TextFormat::RED . 'Enchant Limit Reached!' , $player );
+                    //$player->sendMessage('Enchant Limit Reached!');
                 }
-
-
             }
 
             $info = $item->getLore(); //$item->setCustomName('test');
@@ -190,5 +210,25 @@ class EnchantLimit extends PluginBase {
         }
 
     }
+
+    /** AreaMessage
+    * define message type
+    * @param string $msg
+    * @param PlayerMoveEvent $ev->getPLayer()
+    * @param array $options
+    * @return true function
+    */
+	public function areaMessage( $msg , $player ){
+        if($this->config['settings']['display'] == 'msg'){
+            $player->sendMessage($msg);
+        }else if( $this->config['settings']['display'] == 'title'){
+            $player->addTitle($msg);
+            // $player->addTitle("Title", "Subtitle", $fadeIn = 20, $duration = 60, $fadeOut = 20);
+        }else if($this->config['settings']['display'] == 'tip'){
+			$player->sendTip($msg);
+		}else{
+			$player->sendPopup($msg);
+		}
+	}
 
 }
