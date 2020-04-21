@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genboy\EnchantLimit;
 
+use Genboy\EnchantLimit\Helper;
+
 use pocketmine\Player;
 use pocketmine\utils\Config;
 use pocketmine\plugin\PluginBase;
@@ -163,7 +165,7 @@ class EnchantLimit extends PluginBase {
                 }else{
                     $id = $enchantm->getId();
                     $item->removeEnchantment( $id );
-                    $this->areaMessage( TextFormat::RED . 'Enchant Limit Reached!' , $player );
+                    $this->enchantLimitMessage( TextFormat::RED . 'Enchant Limit Reached!' , $player );
                 }
             }
 
@@ -181,10 +183,10 @@ class EnchantLimit extends PluginBase {
 
     }
 
-    /** AreaMessage
+    /** enchantLimitMessage
     * @param string $msg
     */
-	public function areaMessage( $msg , $player ){
+	public function enchantLimitMessage( $msg , $player ){
         if($this->config['settings']['display'] == 'msg'){
             $player->sendMessage($msg);
         }else if( $this->config['settings']['display'] == 'title'){
